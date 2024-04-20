@@ -14,7 +14,6 @@ export default function App() {
       })
 
       const todoProces = {}
-
       todoProces.name = todoInput
       todoProces.id = idTodo
 
@@ -26,7 +25,7 @@ export default function App() {
     }
   }
 
-  function handDeleteTodo(idTodo) {
+  function handleDeleteTodo(idTodo) {
     setTodos(currentTodos => {
       return currentTodos.filter(todo => todo.id !== idTodo)
     })
@@ -35,7 +34,7 @@ export default function App() {
   return (
     <>
       <ul>
-        {todos.map(todo => <Todo key={todo.id} name={todo.name} idTodo={todo.id} handDeleteTodo={handDeleteTodo} />)}
+        {todos.map(todo => <Todo key={todo.id} name={todo.name} idTodo={todo.id} handleDeleteTodo={handleDeleteTodo} />)}
       </ul>
 
       <div id="new-todo-form">
