@@ -3,18 +3,22 @@ import { Todo } from './TodoItem'
 import './styles.css'
 
 export default function App() {
-  const todoInput = useRef('')
-  const [todos, setTodos] = useState([])
+  const todoInput = useRef();
+  const [todos, setTodos] = useState([]);
 
   useEffect(() => {
     todoInput.current.focus()
   }, [])
 
   const addNewTodo = () => {
-    if (todoInput.current !== '') {
+    if (todoInput.current.value === '')
+      return
+    {
+      const newTodo = todoInput.current.value;
       setTodos(currentTodos => {
-        return [...currentTodos, { id: new Date(), name: todoInput.current }]
+        return [...currentTodos, { id: new Date(), name: newTodo }]
       })
+      todoInput.current.value = '';
     }
   }
 
@@ -32,7 +36,7 @@ export default function App() {
 
       <div id='new-todo-form'>
         <label htmlFor='todo-input'>New Todo</label>
-        <input type="text" id="todo-input" ref={todoInput} onChange={e => todoInput.current = e.target.value} />
+        <input type="text" id="todo-input" ref={todoInput} />
         <button onClick={addNewTodo}>Add Todo</button>
       </div>
     </>
