@@ -1,45 +1,42 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
+import { Todo } from './TodoItem'
 import './styles.css'
-import { Todo } from './Todo'
 
 export default function App() {
-  const [todoInput, setTodoInput] = useState('')
-  const [todos, setTodos] = useState([])
-  const [idTodo, setIdTodo] = useState(0)
+  const todoInput = useRef();
+  const [todos, setTodos] = useState([]);
 
-  function addNewTodo() {
-    if (todoInput !== '') {
-      setIdTodo(currentIdTodo => {
-        return currentIdTodo + 1
-      })
+  useEffect(() => {
+    todoInput.current.focus()
+  }, [])
 
-      const todoProces = {}
-      todoProces.name = todoInput
-      todoProces.id = idTodo
-
+  const addNewTodo = () => {
+    if (todoInput.current.value === '')
+      return
+    {
+      const newTodo = todoInput.current.value;
       setTodos(currentTodos => {
-        return [...currentTodos, todoProces]
+        return [...currentTodos, { id: new Date(), name: newTodo }]
       })
-
-      setTodoInput('')
+      todoInput.current.value = '';
     }
   }
 
-  function handleDeleteTodo(idTodo) {
+  const handleDeleteTodo = (todoId) => {
     setTodos(currentTodos => {
-      return currentTodos.filter(todo => todo.id !== idTodo)
+      return currentTodos.filter(todo => todo.id !== todoId)
     })
   }
 
   return (
     <>
-      <ul>
-        {todos.map(todo => <Todo key={todo.id} name={todo.name} idTodo={todo.id} handleDeleteTodo={handleDeleteTodo} />)}
+      <ul id="list">
+        {todos.map(todo => <Todo key={todo.id} name={todo.name} todoId={todo.id} handleDeleteTodo={handleDeleteTodo} />)}
       </ul>
 
-      <div id="new-todo-form">
-        <label htmlFor="todo-input">New Todo</label>
-        <input type="text" id="todo-input" value={todoInput} onChange={e => setTodoInput(e.target.value)} />
+      <div id='new-todo-form'>
+        <label htmlFor='todo-input'>New Todo</label>
+        <input type="text" id="todo-input" ref={todoInput} />
         <button onClick={addNewTodo}>Add Todo</button>
       </div>
     </>
